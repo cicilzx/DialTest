@@ -36,7 +36,7 @@ def get_BSCov_BTCov(wrapper, states_data):
 
 
 if __name__ == '__main__':
-    wrapper = "../save_profile/nlu-model/snips_abst_train_model/wrapper_lstm_nlu_3_10.pkl"
-    states_data = "../save_profile/nlu-model/snips_test_states/out_0_batch_0.npy"
+    wrapper = "/root/chatbot/DialTest/save_profile/nlu-model/snips_abst_train_model/wrapper_lstm_nlu_3_10.pkl"
+    states_data = "/root/chatbot/DialTest/data/snips/states/out_0.npy"
     BSCov, BTCov = get_BSCov_BTCov(wrapper, states_data)
     print("BSCov: ", BSCov, "BTCov: ", BTCov)
