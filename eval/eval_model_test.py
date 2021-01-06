@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import logging
 import time
+import os
 
 
 def read_vocab_file(vocab_path, bos_eos=False, no_pad=False, no_unk=False, separator=':'):
@@ -230,34 +231,8 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
             top_pred_slots = tag_scores.data.cpu().numpy().argmax(axis=-1)
 
             if save_npy:
-                if len(data_index) < test_batchSize:
-                    np.save(states_path, lstm_out.cpu().detach().numpy())
-                else:
-                    if j == 0:
-                        states_npy = lstm_out.cpu().detach().numpy()
-                        print(states_npy.shape)
-                    else:
-                        now_states = lstm_out.cpu().detach().numpy()
-                        if states_npy.shape[1] > now_states.shape[1]:
-                            b = np.empty([now_states.shape[0], states_npy.shape[1], now_states.shape[2]])
-                            z = np.zeros((states_npy.shape[1] - now_states.shape[1], now_states.shape[2]))
-                            for i in range(len(now_states)):
-                                tmp_data = np.row_stack((now_states[i], z))  # 添加行
-                                b[i] = np.array([tmp_data])
-                            states_npy = np.concatenate((states_npy, b), axis=0)
-                            print("shape", states_npy.shape)
-                        elif now_states.shape[1] > states_npy.shape[1]:
-                            b = np.empty([states_npy.shape[0], now_states.shape[1], states_npy.shape[2]])
-                            z = np.zeros((now_states.shape[1] - states_npy.shape[1], states_npy.shape[2]))
-                            for i in range(len(states_npy)):
-                                tmp_data = np.row_stack((states_npy[i], z))  # 添加行
-                                b[i] = np.array([tmp_data])
-                            states_npy = np.concatenate((states_npy, b), axis=0)
-                            print("shape", states_npy.shape)
-                        elif now_states.shape[1] == states_npy.shape[1]:
-                            states_npy = np.concatenate((states_npy, now_states), axis=0)
-                    if j >= len(data_index) - test_batchSize:
-                        np.save(states_path, states_npy)
+                tmp_save_path = "/root/chatbot/DialTest/data/snips/states/tmp/out_" + str(j) + ".npy"
+                np.save(tmp_save_path, lstm_out.cpu().detach().numpy())
 
             class_scores = model_class(encoder_info_filter(encoder_info))
             class_loss = class_loss_function(class_scores, classes)
@@ -301,6 +276,49 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
                     pred_class_str = pred_class
                     f.write(str(line_nums[idx]) + ' : ' + ' '.join(word_tag_line) + ' <=> ' + '[' + gold_class_str + ']' + ' <=> ' + pred_class_str + '\n')
 
+    # ---
+    tmp_save_path_dir = "/root/chatbot/DialTest/data/snips/states/tmp/"
+    states_num = len(os.listdir(tmp_save_path_dir))
+    if states_num == 1:
+        data = np.load(os.listdir(tmp_save_path_dir)[0])
+        np.save(states_path, data)
+    else:
+        total_len, max_len = 0, 0
+        for states_data_list in os.listdir(tmp_save_path_dir):
+            sub_path = os.path.join(tmp_save_path_dir, states_data_list)
+            print(sub_path)
+            if os.path.isfile(sub_path):
+                data = np.load(sub_path)
+                total_len += data.shape[0]
+                if data.shape[1] > max_len:
+                    max_len = data.shape[1]
+
+        save_data = np.empty([total_len, max_len, 200])
+        p = 0
+        for states_data_list in os.listdir(tmp_save_path_dir):
+            sub_path = os.path.join(tmp_save_path_dir, states_data_list)
+            if os.path.isfile(sub_path):
+                data = np.load(sub_path)
+
+                if data.shape[1] == max_len:
+                    for k in range(len(data)):
+                        save_data[p] = data[k]
+                        p += 1
+                elif data.shape[1] < max_len:
+                    z = np.zeros((max_len - data.shape[1], 200))
+                    for k in range(len(data)):
+                        tmp_data = np.r_[data[k], z]
+                        save_data[p] = np.array([tmp_data])
+                        p += 1
+
+        print(p)
+        np.save(states_path, save_data)
+
+        for states_data_list in os.listdir(tmp_save_path_dir):
+            sub_path = os.path.join(tmp_save_path_dir, states_data_list)
+            if os.path.isfile(sub_path):
+                os.remove(sub_path)
+    # ---
     if TP == 0:
         p, r, f = 0, 0, 0
     else:
