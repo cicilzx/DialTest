@@ -320,8 +320,8 @@ def eval_model(seed_file, out_path, states_path):
     logger = logging.getLogger('mylogger')
     logger.setLevel(logging.INFO)
 
-    model_path = "/home/cici/major/DialTest/save_profile/snips/model"
-    vocab_path = "/home/cici/major/DialTest/save_profile/snips/vocab"
+    model_path = "/root/chatbot/DialTest/data/snips/model"
+    vocab_path = "/root/chatbot/DialTest/data/snips/vocab"
 
     start_time = time.time()
     acc_slot_te, acc_intent_te, loss_te, p_te, r_te, f_te, cf_te = \
@@ -332,7 +332,7 @@ def eval_model(seed_file, out_path, states_path):
 
 
 if __name__ == '__main__':
-    seed_file = "/home/cici/major/DialTest/data/snips/test"
-    out_path = "/home/cici/major/DialTest/data/snips/out/out.txt"
-    states_path = "/home/cici/major/DialTest/data/snips/states/out_" + str(0) + ".npy"
+    seed_file = "/root/chatbot/DialTest/data/snips/test"
+    out_path = "/root/chatbot/DialTest/data/snips/out.txt"
+    states_path = "/root/chatbot/DialTest/data/snips/states/out_" + str(0) + ".npy"
     eval_model(seed_file, out_path, states_path)
