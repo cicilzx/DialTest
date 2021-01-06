@@ -1,6 +1,8 @@
 import os
 from cov.coverage import Coverage
 import numpy as np
+import sys
+sys.path.append("/root/chatbot/DialTest/cov/")
 
 
 def fuzzing_analyzer(dtmc_wrapper_f, states_data_path):
