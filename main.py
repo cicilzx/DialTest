@@ -3,7 +3,7 @@ from eval import eval_model_test
 import os
 
 
-if __name__ == '__main__':
+def main():
     wrapper = "/root/chatbot/DialTest/save_profile/nlu-model/snips_abst_train_model/wrapper_lstm_nlu_3_10.pkl"
     test_data_path = "/root/chatbot/DialTest/data/snips/test"
     out_path = "/root/chatbot/DialTest/data/snips/out/out.txt"
@@ -32,3 +32,12 @@ if __name__ == '__main__':
         else:
             os.remove(states_path)
             pass
+
+
+if __name__ == '__main__':
+    wrapper = "/root/chatbot/DialTest/save_profile/nlu-model/snips_abst_train_model/wrapper_lstm_nlu_3_10.pkl"
+    test_data_path = "/root/chatbot/DialTest/data/snips/test"
+    out_path = "/root/chatbot/DialTest/data/snips/out/out.txt"
+    states_path = "/root/chatbot/DialTest/data/snips/states/out_0.npy"
+    eval_model_test.eval_model(seed_file=test_data_path, out_path=out_path, states_path=states_path)
+    BSCov, BTCov = get_BSCov_BTCov(wrapper, states_path)

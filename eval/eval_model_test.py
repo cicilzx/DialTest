@@ -282,7 +282,8 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
     if states_num == 1:
         data = np.load(os.path.join(tmp_save_path_dir, os.listdir(tmp_save_path_dir)[0]))
         np.save(states_path, data)
-    else:
+        os.remove(os.path.join(tmp_save_path_dir, os.listdir(tmp_save_path_dir)[0]))
+    elif states_num > 1:
         total_len, max_len = 0, 0
         for states_data_list in os.listdir(tmp_save_path_dir):
             sub_path = os.path.join(tmp_save_path_dir, states_data_list)
@@ -344,13 +345,13 @@ def eval_model(seed_file, out_path, states_path):
     start_time = time.time()
     acc_slot_te, acc_intent_te, loss_te, p_te, r_te, f_te, cf_te = \
         decode(seed_file=seed_file, output_path=out_path, device=device, model_path=model_path, vocab_path=vocab_path,
-               save_npy=True, states_path=states_path, test_batchSize=500)
+               save_npy=True, states_path=states_path, test_batchSize=800)
     print('Test:\tTime : %.4fs\tLoss : (%.2f, %.2f)\tFscore : %.2f\tcls-F1 : %.2f\tSlot Acc : %.2f Intent Acc : %.2f' %
         (time.time() - start_time, loss_te[0], loss_te[1], f_te, cf_te, acc_slot_te, acc_intent_te))
 
 
 if __name__ == '__main__':
-    seed_file = "/root/chatbot/DialTest/data/snips/test"
+    test_data_path = "/root/chatbot/DialTest/data/snips/test"
     out_path = "/root/chatbot/DialTest/data/snips/out.txt"
     states_path = "/root/chatbot/DialTest/data/snips/states/out_" + str(0) + ".npy"
-    eval_model(seed_file, out_path, states_path)
+    eval_model(test_data_path, out_path, states_path)
