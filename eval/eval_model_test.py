@@ -280,7 +280,7 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
     tmp_save_path_dir = "/root/chatbot/DialTest/data/snips/states/tmp/"
     states_num = len(os.listdir(tmp_save_path_dir))
     if states_num == 1:
-        data = np.load(os.listdir(tmp_save_path_dir)[0])
+        data = np.load(os.path.join(tmp_save_path_dir, os.listdir(tmp_save_path_dir)[0]))
         np.save(states_path, data)
     else:
         total_len, max_len = 0, 0
