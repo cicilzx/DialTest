@@ -29,6 +29,7 @@ def main():
             print("----------------------------")
             print("line num: ", j, ", new BSCov: ", BSCov_now)
             print("line num: ", j, ", new BTCov: ", BTCov_now)
+            os.remove(states_path)
         else:
             os.remove(states_path)
             pass
