@@ -354,8 +354,9 @@ class sntClassifier_hiddenAttention(nn.Module):
                 class_scores.index_fill_(1, masked_output, 0)
         else:
             class_scores = F.log_softmax(class_space, dim=1)
+            class_softmax = F.softmax(class_space,dim=1)
         
-        return class_scores
+        return class_scores, class_softmax
     
     def load_model(self, load_dir):
         if self.device.type == 'cuda':

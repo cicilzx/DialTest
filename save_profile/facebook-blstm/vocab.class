@@ -1,0 +1,14 @@
+<pad> : 0
+<unk> : 1
+alarm__cancel_alarm : 2
+alarm__modify_alarm : 3
+alarm__set_alarm : 4
+alarm__show_alarms : 5
+alarm__snooze_alarm : 6
+alarm__time_left_on_alarm : 7
+reminder__cancel_reminder : 8
+reminder__set_reminder : 9
+reminder__show_reminders : 10
+weather__checkSunrise : 11
+weather__checkSunset : 12
+weather__find : 13

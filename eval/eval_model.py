@@ -304,11 +304,12 @@ def eval_model(seed_data, states_path):
 if __name__ == '__main__':
     data = np.array([[[1, 2, 3], [1, 2, 3]], [[1, 1, 1], [2, 2, 2]]])
     print(data.shape) #(2,2,3) (2,5,3)
+    print(data)
     z = np.zeros((5-data.shape[1], data.shape[2]))
     b = np.empty([data.shape[0], 5, data.shape[2]])
     print(z.shape)
     for i in range(len(data)):
-        tmp_data = np.row_stack((data[i], z))  # 添加行
+        tmp_data = np.r_[data[i], z]  # 添加行
         print(tmp_data.shape)
         b[i] = np.array([tmp_data])
     print(b)

@@ -129,9 +129,11 @@ class LSTMTagger(nn.Module):
         tag_space = self.hidden2tag(self.dropout_layer(lstm_out_reshape))
         tag_scores = F.log_softmax(tag_space, dim=1)
         tag_scores = tag_scores.view(lstm_out.size(0), lstm_out.size(1), tag_space.size(1))
+        tag_softmax = F.softmax(tag_space, dim=1)
+        tag_softmax = tag_softmax.view(lstm_out.size(0), lstm_out.size(1), tag_space.size(1))
         
         if with_snt_classifier:
-            return tag_scores, (packed_h_t_c_t, lstm_out, lengths)
+            return tag_scores, tag_softmax, (packed_h_t_c_t, lstm_out, lengths)
         else:
             return tag_scores
     

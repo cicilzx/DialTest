@@ -1,0 +1,9 @@
+<pad> : 0
+<unk> : 1
+AddToPlaylist : 2
+BookRestaurant : 3
+GetWeather : 4
+PlayMusic : 5
+RateBook : 6
+SearchCreativeWork : 7
+SearchScreeningEvent : 8

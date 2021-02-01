@@ -7,7 +7,6 @@ import torch
 import torch.nn as nn
 import logging
 import time
-import os
 
 
 def read_vocab_file(vocab_path, bos_eos=False, no_pad=False, no_unk=False, separator=':'):
@@ -185,7 +184,7 @@ def get_chunks(labels):
     return chunks
 
 
-def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, states_path, test_batchSize):
+def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, save_softmax, states_path, test_batchSize):
     tag_to_idx, idx_to_tag = read_vocab_file(vocab_path + '.tag', bos_eos=False, no_pad=True, no_unk=True)
     class_to_idx, idx_to_class = read_vocab_file(vocab_path + '.class', bos_eos=False, no_pad=True, no_unk=True)
     word_to_idx, idx_to_word = read_vocab_file(vocab_path + '.in', bos_eos=False, no_pad=True, no_unk=True)
@@ -225,19 +224,25 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
                                          tag_to_idx, class_to_idx, data_index, j, test_batchSize, add_start_end=False,
                                          multiClass=False, enc_dec_focus=False, device=device)
 
-            tag_scores, (packed_h_t_c_t, lstm_out, lengths) = model_tag(inputs, lens, with_snt_classifier=True)
+            tag_scores, tag_softmax, (packed_h_t_c_t, lstm_out, lengths) = model_tag(inputs, lens, with_snt_classifier=True)
             encoder_info = (packed_h_t_c_t, lstm_out, lengths)
             tag_loss = tag_loss_function(tag_scores.contiguous().view(-1, len(tag_to_idx)), tags.view(-1))
             top_pred_slots = tag_scores.data.cpu().numpy().argmax(axis=-1)
 
             if save_npy:
-                tmp_save_path = "/root/chatbot/DialTest/data/snips/states/tmp/out_" + str(j) + ".npy"
-                np.save(tmp_save_path, lstm_out.cpu().detach().numpy())
+                np.save(states_path, lstm_out.cpu().detach().numpy())
 
-            class_scores = model_class(encoder_info_filter(encoder_info))
+            class_scores, class_softmax = model_class(encoder_info_filter(encoder_info))
             class_loss = class_loss_function(class_scores, classes)
             snt_probs = class_scores.data.cpu().numpy().argmax(axis=-1)
             losses.append([tag_loss.item() / sum(lens), class_loss.item() / len(lens)])
+
+            if save_softmax:
+                gini = 0
+                class_softmax = class_softmax.cpu().detach().numpy()
+                for i in range(0, len(class_softmax[0])):
+                    gini += np.square(class_softmax[0][i])
+                print("gini value: ", 1-gini)
 
             inputs = inputs.data.cpu().numpy()
             # classes = classes.data.cpu().numpy()
@@ -255,6 +260,8 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
                 for label_chunk in label_chunks:
                     if label_chunk not in pred_chunks:
                         FN += 1
+                    else:
+                        TN += 1
 
                 input_line = [idx_to_word[word] for word in inputs[idx]][:length]
                 word_tag_line = [input_line[_idx] + ':[' + lab_seq[_idx] + ']:' + pred_seq[_idx] for _idx in
@@ -276,82 +283,54 @@ def decode(seed_file, output_path, device, model_path, vocab_path, save_npy, sta
                     pred_class_str = pred_class
                     f.write(str(line_nums[idx]) + ' : ' + ' '.join(word_tag_line) + ' <=> ' + '[' + gold_class_str + ']' + ' <=> ' + pred_class_str + '\n')
 
-    # ---
-    tmp_save_path_dir = "/root/chatbot/DialTest/data/snips/states/tmp/"
-    states_num = len(os.listdir(tmp_save_path_dir))
-    if states_num == 1:
-        data = np.load(os.path.join(tmp_save_path_dir, os.listdir(tmp_save_path_dir)[0]))
-        np.save(states_path, data)
-        os.remove(os.path.join(tmp_save_path_dir, os.listdir(tmp_save_path_dir)[0]))
-    elif states_num > 1:
-        total_len, max_len = 0, 0
-        for states_data_list in os.listdir(tmp_save_path_dir):
-            sub_path = os.path.join(tmp_save_path_dir, states_data_list)
-            print(sub_path)
-            if os.path.isfile(sub_path):
-                data = np.load(sub_path)
-                total_len += data.shape[0]
-                if data.shape[1] > max_len:
-                    max_len = data.shape[1]
-
-        save_data = np.empty([total_len, max_len, 200])
-        p = 0
-        for states_data_list in os.listdir(tmp_save_path_dir):
-            sub_path = os.path.join(tmp_save_path_dir, states_data_list)
-            if os.path.isfile(sub_path):
-                data = np.load(sub_path)
-
-                if data.shape[1] == max_len:
-                    for k in range(len(data)):
-                        save_data[p] = data[k]
-                        p += 1
-                elif data.shape[1] < max_len:
-                    z = np.zeros((max_len - data.shape[1], 200))
-                    for k in range(len(data)):
-                        tmp_data = np.r_[data[k], z]
-                        save_data[p] = np.array([tmp_data])
-                        p += 1
-
-        print(p)
-        np.save(states_path, save_data)
-
-        for states_data_list in os.listdir(tmp_save_path_dir):
-            sub_path = os.path.join(tmp_save_path_dir, states_data_list)
-            if os.path.isfile(sub_path):
-                os.remove(sub_path)
-    # ---
     if TP == 0:
         p, r, f = 0, 0, 0
     else:
         p, r, f = 100 * TP / (TP + FP), 100 * TP / (TP + FN), 100 * 2 * TP / (2 * TP + FN + FP)
 
     mean_losses = np.mean(losses, axis=0)
-    slot_accuracy = (TP + TN) / (TP + FP + TN + FN)
-    intent_accuracy = (TP2 + TN2) / (TP2 + FP2 + TN2 + FN2)
+    if TP + FP + TN + FN != 0:
+        slot_accuracy = (TP + TN) / (TP + FP + TN + FN)
+    else:
+        slot_accuracy = 0
+    if TP2 + FP2 + TN2 + FN2 != 0:
+        intent_accuracy = (TP2 + TN2) / (TP2 + FP2 + TN2 + FN2)
+    else:
+        intent_accuracy = 0
+    if save_softmax:
+        return slot_accuracy, intent_accuracy, mean_losses, p, r, f, 0 if 2 * TP2 + FN2 + FP2 == 0 else 100 * 2 * TP2 / (
+                2 * TP2 + FN2 + FP2), 1-gini
     return slot_accuracy, intent_accuracy, mean_losses, p, r, f, 0 if 2 * TP2 + FN2 + FP2 == 0 else 100 * 2 * TP2 / (
                 2 * TP2 + FN2 + FP2)
 
 
-def eval_model(seed_file, out_path, states_path):
+def eval_model(model_path, vocab_path, seed_file, out_path, states_path, save_nyp, save_softmax):
     deviceId, gpu_name, valid_gpus = gpu_selection.auto_select_gpu()
     torch.cuda.set_device(deviceId)
     device = torch.device("cuda")
     logger = logging.getLogger('mylogger')
     logger.setLevel(logging.INFO)
 
-    model_path = "/root/chatbot/DialTest/save_profile/snips/model"
-    vocab_path = "/root/chatbot/DialTest/save_profile/snips/vocab"
-
     start_time = time.time()
-    acc_slot_te, acc_intent_te, loss_te, p_te, r_te, f_te, cf_te = \
-        decode(seed_file=seed_file, output_path=out_path, device=device, model_path=model_path, vocab_path=vocab_path,
-               save_npy=True, states_path=states_path, test_batchSize=800)
+    if save_softmax:
+        acc_slot_te, acc_intent_te, loss_te, p_te, r_te, f_te, cf_te, gini = \
+            decode(seed_file=seed_file, output_path=out_path, device=device, model_path=model_path,
+                   vocab_path=vocab_path, save_npy=save_nyp, states_path=states_path,
+                   test_batchSize=800, save_softmax=save_softmax)
+        print('Test:\tTime : %.4fs\tLoss : (%.2f, %.2f)\tFscore : %.2f\tcls-F1 : %.2f\tSlot Acc : %.2f Intent Acc : %.2f' %
+            (time.time() - start_time, loss_te[0], loss_te[1], f_te, cf_te, acc_slot_te, acc_intent_te))
+        return gini
+    else:
+        acc_slot_te, acc_intent_te, loss_te, p_te, r_te, f_te, cf_te = \
+            decode(seed_file=seed_file, output_path=out_path, device=device, model_path=model_path,
+                   vocab_path=vocab_path, save_npy=save_nyp, states_path=states_path,
+                   test_batchSize=800, save_softmax=save_softmax)
     print('Test:\tTime : %.4fs\tLoss : (%.2f, %.2f)\tFscore : %.2f\tcls-F1 : %.2f\tSlot Acc : %.2f Intent Acc : %.2f' %
         (time.time() - start_time, loss_te[0], loss_te[1], f_te, cf_te, acc_slot_te, acc_intent_te))
 
 
 if __name__ == '__main__':
-    test_data_path = "/root/chatbot/DialTest/data/snips/test"
-    out_path = "/root/chatbot/DialTest/data/snips/out.txt"
-    states_path = "/root/chatbot/DialTest/data/snips/states/out_" + str(0) + ".npy"
-    eval_model(test_data_path, out_path, states_path)
+    seed_file = "/home/cici/major/DialTest/data/snips/test"
+    out_path = "/home/cici/major/DialTest/data/snips/out/out.txt"
+    states_path = "/home/cici/major/DialTest/data/snips/states/out_" + str(0) + ".npy"
+    eval_model(seed_file, out_path, states_path, save_nyp=True, save_softmax=False)

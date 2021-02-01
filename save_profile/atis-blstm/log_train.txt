@@ -1,0 +1,113 @@
+Namespace(batchSize=100, bidirectional=True, bos_eos=False, crf=False, dataroot='./data/atis', dataset='atis', deviceId=0, dropout=0.5, emb_size=1024, enc_dec=False, experiment='exp', fix_input_word2vec=False, hidden_size=200, init_weight=0.2, lr=0.001, max_epoch=30, max_norm=5.0, mini_word_freq=2, multiClass=False, noStdout=False, num_layers=1, optim='adam', out_path=None, random_seed=999, read_input_word2vec='./local/word_embeddings/elmo_1024_cased_for_atis.txt', read_model=None, read_vocab=None, save_model='model', save_vocab='vocab', sc_type='single_cls_CE', st_weight=0.5, tag_emb_size=100, task='slot_tagger__and__hiddenAttention__and__single_cls_CE', task_sc='hiddenAttention', task_st='slot_tagger', test_batchSize=100, testing=False, word_digit_features=False, word_lowercase=False)
+Experiment path: exp/model_slot_tagger__and__hiddenAttention__and__single_cls_CE/data_atis/bidir_True__emb_dim_1024__hid_dim_200_x_1__bs_100__dropout_0.5__optimizer_adam__lr_0.001__mn_5.0__me_30__tes_100__alpha_0.5__preEmb_in
+Sat Jan 16 10:20:43 2021
+Valid GPU list: 0 ; GPU 0 (GeForce RTX 2060) is auto selected.
+Vocab size: 952 132 20
+${word_out_of_pretrained_emb_count} is 2 !
+Training starts at Sat Jan 16 10:20:45 2021
+Training:	Epoch : 0	Time : 0.6340s	Loss of tag : 1.50	Loss of class : 1.50 
+Validation:	Epoch : 0	Time : 0.0839s	Loss : (0.44, 1.06)	Fscore : 77.65	cls-F1 : 77.80	Slot Acc : 0.63 Intent Acc : 0.64
+Evaluation:	Epoch : 0	Time : 0.1530s	Loss : (0.50, 1.01)	Fscore : 76.63	cls-F1 : 79.40	Slot Acc : 0.62 Intent Acc : 0.66
+NEW BEST:	Epoch : 0	best valid F1 : 77.65, cls-F1 : 77.80, slot acc : 0.63, intent acc : 0.64;	test F1 : 76.63, cls-F1 : 79.40, slot acc : 0.62, intent acc : 0.66
+Training:	Epoch : 1	Time : 0.5829s	Loss of tag : 0.35	Loss of class : 0.69 
+Validation:	Epoch : 1	Time : 0.0830s	Loss : (0.23, 0.64)	Fscore : 85.17	cls-F1 : 86.80	Slot Acc : 0.74 Intent Acc : 0.77
+Evaluation:	Epoch : 1	Time : 0.1439s	Loss : (0.32, 0.62)	Fscore : 83.75	cls-F1 : 87.91	Slot Acc : 0.72 Intent Acc : 0.78
+NEW BEST:	Epoch : 1	best valid F1 : 85.17, cls-F1 : 86.80, slot acc : 0.74, intent acc : 0.77;	test F1 : 83.75, cls-F1 : 87.91, slot acc : 0.72, intent acc : 0.78
+Training:	Epoch : 2	Time : 0.6499s	Loss of tag : 0.21	Loss of class : 0.45 
+Validation:	Epoch : 2	Time : 0.0852s	Loss : (0.16, 0.42)	Fscore : 88.82	cls-F1 : 89.80	Slot Acc : 0.80 Intent Acc : 0.81
+Evaluation:	Epoch : 2	Time : 0.1420s	Loss : (0.24, 0.45)	Fscore : 87.20	cls-F1 : 88.80	Slot Acc : 0.77 Intent Acc : 0.80
+NEW BEST:	Epoch : 2	best valid F1 : 88.82, cls-F1 : 89.80, slot acc : 0.80, intent acc : 0.81;	test F1 : 87.20, cls-F1 : 88.80, slot acc : 0.77, intent acc : 0.80
+Training:	Epoch : 3	Time : 0.6625s	Loss of tag : 0.15	Loss of class : 0.33 
+Validation:	Epoch : 3	Time : 0.1352s	Loss : (0.13, 0.30)	Fscore : 90.68	cls-F1 : 92.40	Slot Acc : 0.83 Intent Acc : 0.86
+Evaluation:	Epoch : 3	Time : 0.1609s	Loss : (0.19, 0.32)	Fscore : 89.98	cls-F1 : 91.71	Slot Acc : 0.82 Intent Acc : 0.85
+NEW BEST:	Epoch : 3	best valid F1 : 90.68, cls-F1 : 92.40, slot acc : 0.83, intent acc : 0.86;	test F1 : 89.98, cls-F1 : 91.71, slot acc : 0.82, intent acc : 0.85
+Training:	Epoch : 4	Time : 0.5928s	Loss of tag : 0.12	Loss of class : 0.25 
+Validation:	Epoch : 4	Time : 0.0860s	Loss : (0.11, 0.21)	Fscore : 92.41	cls-F1 : 94.20	Slot Acc : 0.86 Intent Acc : 0.89
+Evaluation:	Epoch : 4	Time : 0.1400s	Loss : (0.17, 0.25)	Fscore : 91.07	cls-F1 : 94.40	Slot Acc : 0.84 Intent Acc : 0.89
+NEW BEST:	Epoch : 4	best valid F1 : 92.41, cls-F1 : 94.20, slot acc : 0.86, intent acc : 0.89;	test F1 : 91.07, cls-F1 : 94.40, slot acc : 0.84, intent acc : 0.89
+Training:	Epoch : 5	Time : 0.5874s	Loss of tag : 0.09	Loss of class : 0.19 
+Validation:	Epoch : 5	Time : 0.0847s	Loss : (0.09, 0.16)	Fscore : 93.86	cls-F1 : 96.20	Slot Acc : 0.88 Intent Acc : 0.93
+Evaluation:	Epoch : 5	Time : 0.1417s	Loss : (0.15, 0.20)	Fscore : 92.49	cls-F1 : 95.52	Slot Acc : 0.86 Intent Acc : 0.91
+NEW BEST:	Epoch : 5	best valid F1 : 93.86, cls-F1 : 96.20, slot acc : 0.88, intent acc : 0.93;	test F1 : 92.49, cls-F1 : 95.52, slot acc : 0.86, intent acc : 0.91
+Training:	Epoch : 6	Time : 0.5893s	Loss of tag : 0.08	Loss of class : 0.14 
+Validation:	Epoch : 6	Time : 0.0822s	Loss : (0.09, 0.14)	Fscore : 94.43	cls-F1 : 96.80	Slot Acc : 0.89 Intent Acc : 0.94
+Evaluation:	Epoch : 6	Time : 0.1416s	Loss : (0.14, 0.16)	Fscore : 93.67	cls-F1 : 96.53	Slot Acc : 0.88 Intent Acc : 0.93
+NEW BEST:	Epoch : 6	best valid F1 : 94.43, cls-F1 : 96.80, slot acc : 0.89, intent acc : 0.94;	test F1 : 93.67, cls-F1 : 96.53, slot acc : 0.88, intent acc : 0.93
+Training:	Epoch : 7	Time : 0.5864s	Loss of tag : 0.07	Loss of class : 0.12 
+Validation:	Epoch : 7	Time : 0.0824s	Loss : (0.07, 0.14)	Fscore : 95.49	cls-F1 : 96.60	Slot Acc : 0.91 Intent Acc : 0.93
+Evaluation:	Epoch : 7	Time : 0.1390s	Loss : (0.14, 0.15)	Fscore : 94.18	cls-F1 : 96.98	Slot Acc : 0.89 Intent Acc : 0.94
+NEW BEST:	Epoch : 7	best valid F1 : 95.49, cls-F1 : 96.60, slot acc : 0.91, intent acc : 0.93;	test F1 : 94.18, cls-F1 : 96.98, slot acc : 0.89, intent acc : 0.94
+Training:	Epoch : 8	Time : 0.5798s	Loss of tag : 0.06	Loss of class : 0.10 
+Validation:	Epoch : 8	Time : 0.0831s	Loss : (0.07, 0.13)	Fscore : 96.30	cls-F1 : 97.00	Slot Acc : 0.93 Intent Acc : 0.94
+Evaluation:	Epoch : 8	Time : 0.1389s	Loss : (0.14, 0.13)	Fscore : 94.13	cls-F1 : 97.98	Slot Acc : 0.89 Intent Acc : 0.96
+NEW BEST:	Epoch : 8	best valid F1 : 96.30, cls-F1 : 97.00, slot acc : 0.93, intent acc : 0.94;	test F1 : 94.13, cls-F1 : 97.98, slot acc : 0.89, intent acc : 0.96
+Training:	Epoch : 9	Time : 0.5783s	Loss of tag : 0.05	Loss of class : 0.09 
+Validation:	Epoch : 9	Time : 0.0819s	Loss : (0.06, 0.12)	Fscore : 96.68	cls-F1 : 97.80	Slot Acc : 0.94 Intent Acc : 0.96
+Evaluation:	Epoch : 9	Time : 0.1419s	Loss : (0.14, 0.13)	Fscore : 94.35	cls-F1 : 97.76	Slot Acc : 0.89 Intent Acc : 0.96
+NEW BEST:	Epoch : 9	best valid F1 : 96.68, cls-F1 : 97.80, slot acc : 0.94, intent acc : 0.96;	test F1 : 94.35, cls-F1 : 97.76, slot acc : 0.89, intent acc : 0.96
+Training:	Epoch : 10	Time : 0.5849s	Loss of tag : 0.04	Loss of class : 0.07 
+Validation:	Epoch : 10	Time : 0.0824s	Loss : (0.05, 0.13)	Fscore : 97.02	cls-F1 : 97.60	Slot Acc : 0.94 Intent Acc : 0.95
+Evaluation:	Epoch : 10	Time : 0.1395s	Loss : (0.13, 0.13)	Fscore : 94.44	cls-F1 : 97.65	Slot Acc : 0.89 Intent Acc : 0.95
+NEW BEST:	Epoch : 10	best valid F1 : 97.02, cls-F1 : 97.60, slot acc : 0.94, intent acc : 0.95;	test F1 : 94.44, cls-F1 : 97.65, slot acc : 0.89, intent acc : 0.95
+Training:	Epoch : 11	Time : 0.5873s	Loss of tag : 0.04	Loss of class : 0.07 
+Validation:	Epoch : 11	Time : 0.0837s	Loss : (0.05, 0.11)	Fscore : 96.85	cls-F1 : 97.60	Slot Acc : 0.94 Intent Acc : 0.95
+Evaluation:	Epoch : 11	Time : 0.1385s	Loss : (0.13, 0.12)	Fscore : 94.58	cls-F1 : 98.21	Slot Acc : 0.90 Intent Acc : 0.96
+Training:	Epoch : 12	Time : 0.5918s	Loss of tag : 0.03	Loss of class : 0.06 
+Validation:	Epoch : 12	Time : 0.0825s	Loss : (0.05, 0.11)	Fscore : 97.40	cls-F1 : 97.80	Slot Acc : 0.95 Intent Acc : 0.96
+Evaluation:	Epoch : 12	Time : 0.1385s	Loss : (0.13, 0.13)	Fscore : 94.82	cls-F1 : 97.87	Slot Acc : 0.90 Intent Acc : 0.96
+NEW BEST:	Epoch : 12	best valid F1 : 97.40, cls-F1 : 97.80, slot acc : 0.95, intent acc : 0.96;	test F1 : 94.82, cls-F1 : 97.87, slot acc : 0.90, intent acc : 0.96
+Training:	Epoch : 13	Time : 0.5813s	Loss of tag : 0.03	Loss of class : 0.06 
+Validation:	Epoch : 13	Time : 0.0827s	Loss : (0.05, 0.12)	Fscore : 97.34	cls-F1 : 97.60	Slot Acc : 0.95 Intent Acc : 0.95
+Evaluation:	Epoch : 13	Time : 0.1390s	Loss : (0.13, 0.12)	Fscore : 95.00	cls-F1 : 98.21	Slot Acc : 0.90 Intent Acc : 0.96
+Training:	Epoch : 14	Time : 0.5851s	Loss of tag : 0.02	Loss of class : 0.05 
+Validation:	Epoch : 14	Time : 0.0827s	Loss : (0.05, 0.13)	Fscore : 97.46	cls-F1 : 98.20	Slot Acc : 0.95 Intent Acc : 0.96
+Evaluation:	Epoch : 14	Time : 0.1393s	Loss : (0.13, 0.12)	Fscore : 94.67	cls-F1 : 98.21	Slot Acc : 0.90 Intent Acc : 0.96
+NEW BEST:	Epoch : 14	best valid F1 : 97.46, cls-F1 : 98.20, slot acc : 0.95, intent acc : 0.96;	test F1 : 94.67, cls-F1 : 98.21, slot acc : 0.90, intent acc : 0.96
+Training:	Epoch : 15	Time : 0.5871s	Loss of tag : 0.02	Loss of class : 0.04 
+Validation:	Epoch : 15	Time : 0.0826s	Loss : (0.05, 0.13)	Fscore : 97.34	cls-F1 : 98.00	Slot Acc : 0.95 Intent Acc : 0.96
+Evaluation:	Epoch : 15	Time : 0.1403s	Loss : (0.13, 0.13)	Fscore : 94.98	cls-F1 : 98.10	Slot Acc : 0.90 Intent Acc : 0.96
+Training:	Epoch : 16	Time : 0.5862s	Loss of tag : 0.02	Loss of class : 0.03 
+Validation:	Epoch : 16	Time : 0.0824s	Loss : (0.04, 0.11)	Fscore : 97.84	cls-F1 : 98.40	Slot Acc : 0.96 Intent Acc : 0.97
+Evaluation:	Epoch : 16	Time : 0.1411s	Loss : (0.14, 0.13)	Fscore : 94.82	cls-F1 : 97.98	Slot Acc : 0.90 Intent Acc : 0.96
+NEW BEST:	Epoch : 16	best valid F1 : 97.84, cls-F1 : 98.40, slot acc : 0.96, intent acc : 0.97;	test F1 : 94.82, cls-F1 : 97.98, slot acc : 0.90, intent acc : 0.96
+Training:	Epoch : 17	Time : 0.6135s	Loss of tag : 0.02	Loss of class : 0.04 
+Validation:	Epoch : 17	Time : 0.0824s	Loss : (0.04, 0.12)	Fscore : 97.75	cls-F1 : 98.40	Slot Acc : 0.96 Intent Acc : 0.97
+Evaluation:	Epoch : 17	Time : 0.1399s	Loss : (0.13, 0.12)	Fscore : 95.05	cls-F1 : 97.98	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 18	Time : 0.5859s	Loss of tag : 0.02	Loss of class : 0.03 
+Validation:	Epoch : 18	Time : 0.0840s	Loss : (0.04, 0.10)	Fscore : 98.04	cls-F1 : 98.40	Slot Acc : 0.96 Intent Acc : 0.97
+Evaluation:	Epoch : 18	Time : 0.1385s	Loss : (0.14, 0.12)	Fscore : 95.12	cls-F1 : 98.32	Slot Acc : 0.91 Intent Acc : 0.97
+NEW BEST:	Epoch : 18	best valid F1 : 98.04, cls-F1 : 98.40, slot acc : 0.96, intent acc : 0.97;	test F1 : 95.12, cls-F1 : 98.32, slot acc : 0.91, intent acc : 0.97
+Training:	Epoch : 19	Time : 0.5897s	Loss of tag : 0.02	Loss of class : 0.03 
+Validation:	Epoch : 19	Time : 0.0824s	Loss : (0.04, 0.12)	Fscore : 97.67	cls-F1 : 98.20	Slot Acc : 0.95 Intent Acc : 0.96
+Evaluation:	Epoch : 19	Time : 0.1384s	Loss : (0.14, 0.13)	Fscore : 95.15	cls-F1 : 98.10	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 20	Time : 0.5851s	Loss of tag : 0.01	Loss of class : 0.03 
+Validation:	Epoch : 20	Time : 0.0820s	Loss : (0.04, 0.12)	Fscore : 97.96	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 20	Time : 0.1387s	Loss : (0.14, 0.13)	Fscore : 95.03	cls-F1 : 98.32	Slot Acc : 0.91 Intent Acc : 0.97
+Training:	Epoch : 21	Time : 0.5821s	Loss of tag : 0.01	Loss of class : 0.03 
+Validation:	Epoch : 21	Time : 0.0825s	Loss : (0.04, 0.13)	Fscore : 97.75	cls-F1 : 97.80	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 21	Time : 0.1386s	Loss : (0.15, 0.15)	Fscore : 95.27	cls-F1 : 98.21	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 22	Time : 0.5843s	Loss of tag : 0.01	Loss of class : 0.03 
+Validation:	Epoch : 22	Time : 0.0826s	Loss : (0.04, 0.14)	Fscore : 97.84	cls-F1 : 98.00	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 22	Time : 0.1396s	Loss : (0.15, 0.13)	Fscore : 95.12	cls-F1 : 98.21	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 23	Time : 0.5852s	Loss of tag : 0.01	Loss of class : 0.02 
+Validation:	Epoch : 23	Time : 0.0849s	Loss : (0.04, 0.12)	Fscore : 97.98	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 23	Time : 0.1386s	Loss : (0.14, 0.14)	Fscore : 95.17	cls-F1 : 98.21	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 24	Time : 0.5809s	Loss of tag : 0.01	Loss of class : 0.02 
+Validation:	Epoch : 24	Time : 0.0823s	Loss : (0.04, 0.12)	Fscore : 97.81	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 24	Time : 0.1381s	Loss : (0.15, 0.14)	Fscore : 95.03	cls-F1 : 98.21	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 25	Time : 0.5843s	Loss of tag : 0.01	Loss of class : 0.02 
+Validation:	Epoch : 25	Time : 0.0822s	Loss : (0.04, 0.10)	Fscore : 98.13	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 25	Time : 0.1389s	Loss : (0.15, 0.13)	Fscore : 95.10	cls-F1 : 98.43	Slot Acc : 0.91 Intent Acc : 0.97
+Training:	Epoch : 26	Time : 0.5847s	Loss of tag : 0.01	Loss of class : 0.01 
+Validation:	Epoch : 26	Time : 0.0827s	Loss : (0.04, 0.11)	Fscore : 97.96	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 26	Time : 0.1385s	Loss : (0.15, 0.13)	Fscore : 95.20	cls-F1 : 98.10	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 27	Time : 0.5841s	Loss of tag : 0.01	Loss of class : 0.02 
+Validation:	Epoch : 27	Time : 0.0825s	Loss : (0.04, 0.14)	Fscore : 97.84	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 27	Time : 0.1390s	Loss : (0.15, 0.15)	Fscore : 95.22	cls-F1 : 97.98	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 28	Time : 0.5841s	Loss of tag : 0.01	Loss of class : 0.02 
+Validation:	Epoch : 28	Time : 0.0834s	Loss : (0.04, 0.13)	Fscore : 98.16	cls-F1 : 98.20	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 28	Time : 0.1381s	Loss : (0.15, 0.14)	Fscore : 95.35	cls-F1 : 98.21	Slot Acc : 0.91 Intent Acc : 0.96
+Training:	Epoch : 29	Time : 0.5833s	Loss of tag : 0.01	Loss of class : 0.01 
+Validation:	Epoch : 29	Time : 0.0828s	Loss : (0.04, 0.12)	Fscore : 98.16	cls-F1 : 98.00	Slot Acc : 0.96 Intent Acc : 0.96
+Evaluation:	Epoch : 29	Time : 0.1395s	Loss : (0.15, 0.14)	Fscore : 95.35	cls-F1 : 98.21	Slot Acc : 0.91 Intent Acc : 0.96
+BEST RESULT: 	Epoch : 18	best valid (Loss: (0.04, 0.10) F1 : 98.04, cls-F1 : 98.40, Slot Acc : 0.96, Intent Acc : 0.97)	best test (Loss: (0.14, 0.12) F1 : 95.12, cls-F1 : 98.32, Slot Acc : 0.91, Intent Acc : 0.97) 
