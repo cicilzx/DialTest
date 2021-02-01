@@ -12,7 +12,7 @@ We design and implement DialTest, the first RNNdriven dialogue system testing to
 - Back Translation (BT): The operators of this family translate the target sentence into an intermediate language and then translates it back to the original language.
 - Word Insertion (WI): The operators of this family transformthe sentence by inserting words with the pre-trained language model.
 
-![截屏2021-02-01 上午9.15.13](/Users/liuzixi/Library/Application Support/typora-user-images/截屏2021-02-01 上午9.15.13.png)
+![transformation](fig/transformation.png)
 
 
 
